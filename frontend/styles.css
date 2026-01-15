@@ -165,6 +165,18 @@ h2 {
     color: #ef4444;
 }
 
+.store-id-msg {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: #f3f4f6;
+    padding: 0.5rem;
+    border-radius: 4px;
+    word-break: break-all;
+    font-family: monospace;
+    text-align: center;
+}
+
 /* Ask Section */
 .input-group {
     display: flex;

@@ -54,6 +54,14 @@ uploadBtn.addEventListener('click', async () => {
 
         uploadStatus.textContent = "✓ Success! Presentation indexed.";
         uploadStatus.className = "status-msg success";
+
+        // Show Store ID
+        const storeIdDisplay = document.getElementById('storeIdDisplay');
+        if (storeIdDisplay) {
+            storeIdDisplay.textContent = `Store ID: ${currentStoreId}`;
+            storeIdDisplay.classList.remove('hidden');
+        }
+
         askSection.classList.remove('disabled');
 
     } catch (error) {
