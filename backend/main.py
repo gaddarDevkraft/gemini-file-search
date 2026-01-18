@@ -61,6 +61,8 @@ async def upload_doc(file: UploadFile = File(...)):
             config={'display_name': f'Store_{file.filename}'}
         )
         file_search_store_id = store.name
+        print(f"Created store: {store}")
+        
         operation = client.file_search_stores.upload_to_file_search_store(
             file=file_path,
             file_search_store_name=file_search_store_id,
@@ -90,11 +92,36 @@ async def search(question: str = Form(...), file_search_store_id_param: str = Fo
     if not target_store_id:
         raise HTTPException(status_code=400, detail="No Store ID available.")
 
-    prompt = question
+    prompt = f"""
+        Answer the following question based only on the provided documents.
+
+        Question:
+        {question}
+
+        Instructions:
+        - Provide a clear and concise answer.
+        - Do not invent information or sources.
+        - At the bottom of the answer, include the source details in the exact format shown below.
+        - Use slide numbers (not page numbers) for PPT files.
+        - If the answer is not found in the documents, clearly state that and set the confidence score to 0.
+
+        Response format:
+
+        Answer:
+        <write the answer here>
+
+        Source:
+        - Document: <document_name.ppt>
+        Slide Number(s): <slide numbers>
+
+        Confidence Score:
+        <integer between 0 and 100>
+
+        """
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash", # Use Flash for speed/cost
+            model="gemini-2.5-flash", 
             contents=prompt,
             config=types.GenerateContentConfig(
                 tools=[
@@ -107,10 +134,10 @@ async def search(question: str = Form(...), file_search_store_id_param: str = Fo
             )
         )
 
-        answer = response.text
+        answer = response.text if response.text else "No answer content returned."
         
         citations = []
-        if response.candidates[0].grounding_metadata:
+        if response.candidates and response.candidates[0].grounding_metadata:
             meta = response.candidates[0].grounding_metadata
             citations = meta.grounding_chunks
 
@@ -121,7 +148,9 @@ async def search(question: str = Form(...), file_search_store_id_param: str = Fo
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error generating content: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn
