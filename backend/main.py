@@ -112,10 +112,8 @@ async def search(question: str = Form(...), file_search_store_id_param: str = Fo
 
         Source:
         - Document: <document_name.ppt>
-        Slide Number(s): <slide numbers>
-
-        Confidence Score:
-        <integer between 0 and 100>
+        - Slide Number(s): <slide numbers>
+        - Confidence Score: <integer between 0 and 100>
 
         """
 

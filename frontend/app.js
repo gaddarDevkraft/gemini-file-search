@@ -1,6 +1,6 @@
-const API_URL = import.meta.env.VITE_API_BASE_URL || '/api';
-// Store ID from env
-let currentStoreId = import.meta.env.VITE_STORE_ID || "";
+const API_URL = 'http://localhost:8000';
+// Hardcoded Store ID default
+let currentStoreId = "fileSearchStores/storebatch1768740878-yyfj3idnm93u";
 
 const fileInput = document.getElementById('fileInput');
 const dropArea = document.getElementById('dropArea');
@@ -54,6 +54,14 @@ uploadBtn.addEventListener('click', async () => {
 
         uploadStatus.textContent = "✓ Success! Presentation indexed.";
         uploadStatus.className = "status-msg success";
+
+        // Show Store ID
+        const storeIdDisplay = document.getElementById('storeIdDisplay');
+        if (storeIdDisplay) {
+            storeIdDisplay.textContent = `Store ID: ${currentStoreId}`;
+            storeIdDisplay.classList.remove('hidden');
+        }
+
         askSection.classList.remove('disabled');
 
     } catch (error) {
@@ -75,7 +83,7 @@ askBtn.addEventListener('click', async () => {
     try {
         const formData = new FormData();
         formData.append('question', question);
-        formData.append('file_search_store_id', currentStoreId);
+        formData.append('file_search_store_id_param', currentStoreId);
 
         const response = await fetch(`${API_URL}/search`, {
             method: 'POST',
@@ -101,25 +109,12 @@ askBtn.addEventListener('click', async () => {
 
                 const title = document.createElement('div');
                 title.className = 'citation-title';
-
-                // Find all matches for [Image X] or [Page X]
-                const pageMatches = context.text ? [...context.text.matchAll(/\[(Image|Page|Slide)\s+(\d+)\]/gi)] : [];
-
-                if (pageMatches.length > 0) {
-                    const pages = pageMatches.map(m => m[2]).join(', ');
-                    title.textContent = `Page no. ${pages}`;
-                } else {
-                    title.textContent = context.title || "Reference";
-                }
+                title.textContent = context.title || "Unknown Document";
 
                 const text = document.createElement('div');
                 text.className = 'citation-text';
-                // Show more text and don't truncate strictly if scrolling is enabled
-                let displayContent = context.text || "No content";
-                if (displayContent.length > 500) {
-                    displayContent = displayContent.substring(0, 500) + "...";
-                }
-                text.textContent = displayContent;
+                // Truncate text if too long for preview
+                text.textContent = context.text ? (context.text.substring(0, 150) + "...") : "No content";
 
                 li.appendChild(title);
                 li.appendChild(text);

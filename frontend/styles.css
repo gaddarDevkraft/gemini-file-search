@@ -165,6 +165,18 @@ h2 {
     color: #ef4444;
 }
 
+.store-id-msg {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: #f3f4f6;
+    padding: 0.5rem;
+    border-radius: 4px;
+    word-break: break-all;
+    font-family: monospace;
+    text-align: center;
+}
+
 /* Ask Section */
 .input-group {
     display: flex;
@@ -294,9 +306,9 @@ h2 {
 .citation-text {
     color: var(--text);
     line-height: 1.4;
-    white-space: pre-wrap; /* Preserve formatting */
-    overflow-y: auto; /* Scroll if too long */
-    max-height: 200px;
-    font-family: monospace; /* Better for table alignment */
-    font-size: 0.8rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    /* Show max 4 lines */
+    -webkit-box-orient: vertical;
 }

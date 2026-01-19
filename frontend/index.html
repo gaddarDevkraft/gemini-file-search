@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semantic Search</title>
+    <title>Gemini PPT Query</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,8 +14,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Semantic Search</h1>
-            <p>Upload a document and ask questions instantly.</p>
+            <h1>Gemini PPT Assistant</h1>
+            <p>Upload a presentation and ask questions instantly.</p>
         </header>
 
         <main class="main-layout">
@@ -23,7 +23,7 @@
                 <section class="card ask-section disabled" id="askSection">
                     <h2>2. Ask a Question</h2>
                     <div class="input-group">
-                        <input type="text" id="questionInput" placeholder="Ask any thing from File">
+                        <input type="text" id="questionInput" placeholder="ask anything about your presentation">
                         <button id="askBtn" class="primary-btn">Ask</button>
                     </div>
                     <div id="loading" class="loading hidden">Thinking...</div>
@@ -42,7 +42,7 @@
 
             <aside class="right-panel">
                 <section class="card upload-section">
-                    <h2>1. Upload Document</h2>
+                    <h2>1. Upload PPT</h2>
                     <div class="file-drop-area compact" id="dropArea">
                         <span class="icon">📂</span>
                         <span class="file-msg">Drag & Drop</span>
@@ -50,12 +50,13 @@
                     </div>
                     <button id="uploadBtn" class="primary-btn small-btn" disabled>Upload</button>
                     <div id="uploadStatus" class="status-msg"></div>
+                    <div id="storeIdDisplay" class="store-id-msg hidden"></div>
                 </section>
             </aside>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script type="module" src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
